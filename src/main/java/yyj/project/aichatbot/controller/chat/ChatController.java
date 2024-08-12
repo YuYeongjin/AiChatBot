@@ -1,4 +1,4 @@
-package yyj.project.aichatbot.controller;
+package yyj.project.aichatbot.controller.chat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import yyj.project.aichatbot.service.ChatService;
+import yyj.project.aichatbot.service.chat.ChatService;
 
 import java.util.Map;
 

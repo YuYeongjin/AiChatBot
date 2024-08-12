@@ -1,9 +1,9 @@
-package yyj.project.aichatbot.service;
+package yyj.project.aichatbot.service.chat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import yyj.project.aichatbot.model.Chat;
-import yyj.project.aichatbot.repository.ChatRepository;
+import yyj.project.aichatbot.repository.chat.ChatRepository;
 
 import java.util.HashMap;
 import java.util.Map;
