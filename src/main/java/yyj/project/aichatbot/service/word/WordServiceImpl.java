@@ -2,14 +2,10 @@ package yyj.project.aichatbot.service.word;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import yyj.project.aichatbot.model.Chat;
 import yyj.project.aichatbot.model.Word;
-import yyj.project.aichatbot.repository.chat.ChatRepository;
 import yyj.project.aichatbot.repository.word.WordRepository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -36,7 +32,6 @@ public class WordServiceImpl implements WordService {
         Map<String,Object> result = new HashMap<>();
 
         result.put("wordList",wordRepository.findAll());
-
         return result;
     }
 
