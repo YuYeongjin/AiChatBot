@@ -6,6 +6,7 @@ import yyj.project.aichatbot.model.Word;
 import yyj.project.aichatbot.repository.word.WordRepository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -39,11 +40,31 @@ public class WordServiceImpl implements WordService {
     public Map<String, String> deleteWord(Map<String, String> req) {
         Map<String, String> result = new HashMap<>();
 
-        if(req.get("mean").isEmpty()){
-            result.put("status", String.valueOf(wordRepository.deleteByWord(req.get("word"))));
-        } else {
-            result.put("status", String.valueOf(wordRepository.deleteByMean(req.get("mean"))));
+        try{
+            wordRepository.deleteById(Long.valueOf(req.get("id")));
+            result.put("status", "1");
+        } catch (Exception e){
+            result.put("status","0");
         }
+
+
+        return result;
+    }
+
+    @Override
+    public Map<String, String> insertList(Map<String, List<Map<String, String>>> req) {
+        Map<String,String> result = new HashMap<>();
+
+        for(int i = 0; i < req.get("parsedWords").size();i++){
+            Word word = new Word();
+
+            word.setMean(req.get("parsedWords").get(i).get("mean"));
+            word.setWord(req.get("parsedWords").get(i).get("word"));
+
+            result.put("status", String.valueOf(wordRepository.save(word)));
+        }
+
+
 
         return result;
     }

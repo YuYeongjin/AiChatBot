@@ -7,7 +7,7 @@ public interface WordRepository extends JpaRepository<Word,Long> {
 
     Word findWordByMean(String mean);
 
-    String deleteByWord(String word);
-    String deleteByMean(String mean);
+    void deleteByWord(String word);
+    void deleteByMean(String mean);
 
 }

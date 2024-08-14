@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import yyj.project.aichatbot.service.word.WordService;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,5 +30,10 @@ public class WordController {
     @PostMapping("/delete")
     private ResponseEntity<?> deleteWord(@RequestBody Map<String,String> req){
         return ResponseEntity.ok(wordService.deleteWord(req));
+    }
+
+    @PostMapping("/insertList")
+    public ResponseEntity<?> insertList(@RequestBody Map<String, List<Map<String, String>>> req){
+        return ResponseEntity.ok(wordService.insertList(req));
     }
 }
