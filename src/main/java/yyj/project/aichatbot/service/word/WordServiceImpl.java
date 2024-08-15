@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import yyj.project.aichatbot.model.Word;
 import yyj.project.aichatbot.repository.word.WordRepository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,48 @@ public class WordServiceImpl implements WordService {
 
 
 
+        return result;
+    }
+
+    @Override
+    public Map<String, String> updateWord(Map<String, String> req) {
+        Map<String,String> result = new HashMap<>();
+
+
+        try{
+            if(req.get("word") != null){
+                wordRepository.updateWordById(Long.valueOf(req.get("id")),req.get("word"));
+            }
+            if (req.get("mean") != null){
+                wordRepository.updateMeanById(Long.valueOf(req.get("id")),req.get("mean"));
+            }
+            result.put("status","1");
+        } catch (Exception e){
+            result.put("error",e.getMessage());
+        }
+
+
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> createProblem(Map<String, String> req) {
+        Map<String,Object> result = new HashMap<>();
+        List<Word> wordList = new ArrayList<>();
+        List<Word> count = wordRepository.findAll();
+        Boolean[] check = new Boolean[count.size()];
+        int amount = Integer.parseInt(req.get("amount"));
+        int i =0;
+        while (i!=amount){
+            long random = (long) (Math.random()*count.size());
+            System.out.println(" random :  "+ random);
+            if(!check[((int) random)]){
+                check[Math.toIntExact(random)] = true;
+                wordList.add( wordRepository.findById(random).orElse(null));
+                i++;
+            }
+        }
+        result.put("wordList",wordList);
         return result;
     }
 }
