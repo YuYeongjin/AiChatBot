@@ -1,14 +1,12 @@
 package yyj.project.aichatbot.service.word;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import yyj.project.aichatbot.model.Word;
 import yyj.project.aichatbot.repository.word.WordRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class WordServiceImpl implements WordService {
@@ -22,7 +20,7 @@ public class WordServiceImpl implements WordService {
         Word word = new Word();
 
         word.setMean(req.get("mean"));
-        word.setWord(req.get("mean"));
+        word.setWord(req.get("word"));
 
         result.put("status", String.valueOf(wordRepository.save(word)));
 
@@ -70,10 +68,9 @@ public class WordServiceImpl implements WordService {
         return result;
     }
     @Override
+    @Transactional
     public Map<String, String> updateWord(Map<String, String> req) {
         Map<String,String> result = new HashMap<>();
-
-
         try{
             if(req.get("word") != null){
                 wordRepository.updateWordById(Long.valueOf(req.get("id")),req.get("word"));
@@ -97,13 +94,13 @@ public class WordServiceImpl implements WordService {
         List<Word> count = wordRepository.findAll();
         Boolean[] check = new Boolean[count.size()];
         int amount = Integer.parseInt(req.get("amount"));
+        Arrays.fill(check, false);
         int i =0;
         while (i!=amount){
             long random = (long) (Math.random()*count.size());
-            System.out.println(" random :  "+ random);
             if(!check[((int) random)]){
                 check[Math.toIntExact(random)] = true;
-                wordList.add( wordRepository.findById(random).orElse(null));
+                wordList.add( wordRepository.findById(random+1).orElse(null));
                 i++;
             }
         }
