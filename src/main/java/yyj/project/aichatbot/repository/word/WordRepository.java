@@ -19,4 +19,6 @@ public interface WordRepository extends JpaRepository<Word,Long> {
     @Modifying
     @Query("UPDATE Word w SET w.mean = :mean WHERE w.id = :id")
     void updateMeanById(@Param("id") Long id, @Param("mean") String mean);
+
+
 }

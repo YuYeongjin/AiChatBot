@@ -4,15 +4,19 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import yyj.project.aichatbot.model.Word;
+import yyj.project.aichatbot.model.WordList;
+import yyj.project.aichatbot.repository.word.WordListRepository;
 import yyj.project.aichatbot.repository.word.WordRepository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 public class WordServiceImpl implements WordService {
    @Autowired
    private WordRepository wordRepository;
-
+    @Autowired
+    private WordListRepository wordListRepository;
 
     @Override
     public Map<String, String> insertWord(Map<String, String> req) {
@@ -105,6 +109,34 @@ public class WordServiceImpl implements WordService {
             }
         }
         result.put("wordList",wordList);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> saveList(Map<String, Object> req) {
+        Map<String,Object> result = new HashMap<>();
+        try{
+            List<Word> wordLists = new ArrayList<>();
+            wordLists = (List<Word>) req.get("ownList");
+            String name = (String) req.get("name");
+            System.out.println(" 문제 리스트 저장하기 ");
+            System.out.println(" req ::  "+ name + " // " + wordLists);
+
+            WordList wordList = new WordList();
+            wordList.setName(name);
+            wordList.setCreatedAt(LocalDateTime.now());
+            wordList.setWord(wordLists);
+
+            wordListRepository.save(wordList);
+            result.put("status","1");
+        } catch ( Exception e){
+            result.put("status","0");
+            result.put("error",e.getMessage());
+
+            e.printStackTrace();
+        }
+
+
         return result;
     }
 }

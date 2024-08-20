@@ -19,4 +19,6 @@ public interface WordService {
     Map<String,String> updateWord(Map<String, String> req);
 
     Map<String,Object> createProblem(Map<String, String> req);
+
+    Map<String,Object> saveList(Map<String, Object> req);
 }

@@ -44,4 +44,8 @@ public class WordController {
     public ResponseEntity<?> createProblem(@RequestBody Map<String,String> req){
         return ResponseEntity.ok(wordService.createProblem(req));
     }
+    @PostMapping("/saveList")
+    public ResponseEntity<?> saveList(@RequestBody Map<String,Object> req){
+        return ResponseEntity.ok(wordService.saveList(req));
+    }
 }
