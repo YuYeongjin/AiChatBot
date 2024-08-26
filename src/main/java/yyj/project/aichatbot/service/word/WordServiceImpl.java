@@ -119,13 +119,11 @@ public class WordServiceImpl implements WordService {
             List<Word> wordLists = new ArrayList<>();
             wordLists = (List<Word>) req.get("ownList");
             String name = (String) req.get("name");
-            System.out.println(" 문제 리스트 저장하기 ");
-            System.out.println(" req ::  "+ name + " // " + wordLists);
 
             WordList wordList = new WordList();
             wordList.setName(name);
             wordList.setCreatedAt(LocalDateTime.now());
-            wordList.setWord(wordLists);
+            wordList.setWordList(wordLists.toString());
 
             wordListRepository.save(wordList);
             result.put("status","1");
@@ -137,6 +135,14 @@ public class WordServiceImpl implements WordService {
         }
 
 
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> totalWordList() {
+        Map<String,Object> result = new HashMap<>();
+
+        result.put("wordLists",wordListRepository.findAll());
         return result;
     }
 }

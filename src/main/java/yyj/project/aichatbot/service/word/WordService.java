@@ -21,4 +21,6 @@ public interface WordService {
     Map<String,Object> createProblem(Map<String, String> req);
 
     Map<String,Object> saveList(Map<String, Object> req);
+
+    Map<String,Object> totalWordList();
 }
