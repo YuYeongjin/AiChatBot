@@ -19,6 +19,12 @@ public class Word {
 
     @Override
         public String toString(){
-        return "Word => id : " +  id + " / word : " + word + " / mean : " + mean  ;
+        return "{\"id\":\"" + id + "\", \"word\":\"" + word +
+                "\", \"mean\":\"" + mean +
+                "\"}";
     }
+
+
+
+
 }

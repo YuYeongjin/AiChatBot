@@ -14,6 +14,8 @@ public class WordList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Lob
+    @Column
     private String wordList;
 
     private String name;
