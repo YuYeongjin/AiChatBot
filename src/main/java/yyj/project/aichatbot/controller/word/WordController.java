@@ -36,12 +36,20 @@ public class WordController {
     public ResponseEntity<?> insertList(@RequestBody Map<String, List<Map<String, String>>> req){
         return ResponseEntity.ok(wordService.insertList(req));
     }
-    @PostMapping("/updateWord")
+     @PostMapping("/updateWord")
     public ResponseEntity<?> updateWord(@RequestBody Map<String,String> req){
         return ResponseEntity.ok(wordService.updateWord(req));
     }
     @PostMapping("/createProblem")
     public ResponseEntity<?> createProblem(@RequestBody Map<String,String> req){
         return ResponseEntity.ok(wordService.createProblem(req));
+    }
+    @PostMapping("/saveList")
+    public ResponseEntity<?> saveList(@RequestBody Map<String,Object> req){
+        return ResponseEntity.ok(wordService.saveList(req));
+    }
+    @PostMapping("/totalWordList")
+    public ResponseEntity<?> totalWordList(){
+        return ResponseEntity.ok(wordService.totalWordList());
     }
 }

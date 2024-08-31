@@ -12,6 +12,14 @@ public interface WordRepository extends JpaRepository<Word,Long> {
 
     void deleteByWord(String word);
     void deleteByMean(String mean);
+    @Modifying
+    @Query("UPDATE Word w SET w.word = :word WHERE w.id = :id")
+    void updateWordById(@Param("id") Long id, @Param("word") String word);
+
+    @Modifying
+    @Query("UPDATE Word w SET w.mean = :mean WHERE w.id = :id")
+    void updateMeanById(@Param("id") Long id, @Param("mean") String mean);
+
 
     @Modifying
     @Query("UPDATE Word w SET w.word = :word WHERE w.id = :id")

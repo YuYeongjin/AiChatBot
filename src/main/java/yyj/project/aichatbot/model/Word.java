@@ -16,4 +16,15 @@ public class Word {
     private Long id;
     private String word;
     private String mean;
+
+    @Override
+        public String toString(){
+        return "{\"id\":\"" + id + "\", \"word\":\"" + word +
+                "\", \"mean\":\"" + mean +
+                "\"}";
+    }
+
+
+
+
 }
