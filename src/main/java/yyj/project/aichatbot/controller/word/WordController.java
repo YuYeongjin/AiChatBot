@@ -52,4 +52,9 @@ public class WordController {
     public ResponseEntity<?> totalWordList(){
         return ResponseEntity.ok(wordService.totalWordList());
     }
+
+    @PostMapping("/loadSaveList")
+    public ResponseEntity<?> loadSaveList(@RequestBody Map<String,Object> req){
+        return ResponseEntity.ok(wordService.loadSaveList(req));
+    }
 }

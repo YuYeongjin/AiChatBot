@@ -145,4 +145,42 @@ public class WordServiceImpl implements WordService {
         result.put("wordLists",wordListRepository.findAll());
         return result;
     }
+
+    @Override
+    public Map<String, Object> loadSaveList(Map<String, Object> req) {
+        Map<String,Object> result = new HashMap<>();
+        List<Word> resultList = new ArrayList<>();
+        LinkedHashMap wordReq = new LinkedHashMap();
+
+        wordReq = (LinkedHashMap) req.get("list");
+//     TODO => LinkedHashMap forEach ====>>>
+        for(int i = 0; i < wordReq.size(); i++){
+            Map<String,String> word = new HashMap<>();
+            word =
+            Word word = new Word();
+            word.setId(wordReq.get());
+            word.setWord(words.get("word"));
+            word.setMean(words.get("mean"));
+            resultList.add(word);
+        }
+/*
+        wordReq.forEach( (k,v)->{
+                Word word = new Word();
+        word.setId();
+        word.setWord(words.get("word"));
+        word.setMean(words.get("mean"));
+        resultList.add(word);
+        } );
+
+ */
+
+        result.put("wordLists",resultList);
+        return result;
+    }
 }
+
+//                Word word = new Word();
+//        word.setMean(e);
+//        word.setWord(words.get("word"));
+//        word.setMean(words.get("mean"));
+//        resultList.add(word);

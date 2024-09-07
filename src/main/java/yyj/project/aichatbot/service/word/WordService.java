@@ -23,4 +23,6 @@ public interface WordService {
     Map<String,Object> saveList(Map<String, Object> req);
 
     Map<String,Object> totalWordList();
+
+    Map<String,Object> loadSaveList(Map<String, Object> req);
 }
