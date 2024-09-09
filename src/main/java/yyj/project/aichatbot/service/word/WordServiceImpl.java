@@ -1,5 +1,7 @@
 package yyj.project.aichatbot.service.word;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -145,42 +147,31 @@ public class WordServiceImpl implements WordService {
         result.put("wordLists",wordListRepository.findAll());
         return result;
     }
+ /// TODO ++++
 
     @Override
     public Map<String, Object> loadSaveList(Map<String, Object> req) {
-        Map<String,Object> result = new HashMap<>();
-        List<Word> resultList = new ArrayList<>();
-        LinkedHashMap wordReq = new LinkedHashMap();
+        Map<String, Object> result = new HashMap<>();
+        List<Map<String, String>> resultList = new ArrayList<>();
 
-        wordReq = (LinkedHashMap) req.get("list");
-//     TODO => LinkedHashMap forEach ====>>>
-        for(int i = 0; i < wordReq.size(); i++){
-            Map<String,String> word = new HashMap<>();
-            word =
-            Word word = new Word();
-            word.setId(wordReq.get());
-            word.setWord(words.get("word"));
-            word.setMean(words.get("mean"));
+        // req.get("list")가 LinkedHashMap인 경우 처리
+        LinkedHashMap wordReq = (LinkedHashMap) req.get("list");
+
+        // wordList를 List<LinkedHashMap<String, Object>>로 캐스팅
+        List<LinkedHashMap<String, Object>> wordLists = (List<LinkedHashMap<String, Object>>) wordReq.get("wordList");
+
+        // wordLists를 순회하며 데이터를 추출
+        for (LinkedHashMap<String, Object> wordMap : wordLists) {
+            Map<String, String> word = new HashMap<>();
+            word.put("id", wordMap.get("id").toString()); // id를 String으로 변환
+            word.put("word", (String) wordMap.get("word"));
+            word.put("mean", (String) wordMap.get("mean"));
             resultList.add(word);
         }
-/*
-        wordReq.forEach( (k,v)->{
-                Word word = new Word();
-        word.setId();
-        word.setWord(words.get("word"));
-        word.setMean(words.get("mean"));
-        resultList.add(word);
-        } );
 
- */
-
-        result.put("wordLists",resultList);
+        // 결과 리스트를 result 맵에 추가
+        result.put("wordLists", resultList);
         return result;
     }
-}
 
-//                Word word = new Word();
-//        word.setMean(e);
-//        word.setWord(words.get("word"));
-//        word.setMean(words.get("mean"));
-//        resultList.add(word);
+}
