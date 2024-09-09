@@ -1,5 +1,6 @@
 package yyj.project.aichatbot.service.word;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
@@ -12,6 +13,7 @@ import yyj.project.aichatbot.repository.word.WordRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class WordServiceImpl implements WordService {
@@ -147,30 +149,21 @@ public class WordServiceImpl implements WordService {
         result.put("wordLists",wordListRepository.findAll());
         return result;
     }
- /// TODO ++++
+ /// TODO ++++ 파싱하기
 
     @Override
     public Map<String, Object> loadSaveList(Map<String, Object> req) {
         Map<String, Object> result = new HashMap<>();
         List<Map<String, String>> resultList = new ArrayList<>();
-
+        System.out.println("  req.get(\"list\"): " +  req.get("list"));
+         System.out.println(" req.get(\"list\") class : " +  req.get("list").getClass().toString());
         // req.get("list")가 LinkedHashMap인 경우 처리
         LinkedHashMap wordReq = (LinkedHashMap) req.get("list");
+//        List<Word> resultLists = wordReq.stream()
+//                .map(map-> new Word((Long) map.get("id"), map.get("word").toString(), map.get("mean").toString()))
+//                .collect(Collectors.toList());
 
-        // wordList를 List<LinkedHashMap<String, Object>>로 캐스팅
-        List<LinkedHashMap<String, Object>> wordLists = (List<LinkedHashMap<String, Object>>) wordReq.get("wordList");
-
-        // wordLists를 순회하며 데이터를 추출
-        for (LinkedHashMap<String, Object> wordMap : wordLists) {
-            Map<String, String> word = new HashMap<>();
-            word.put("id", wordMap.get("id").toString()); // id를 String으로 변환
-            word.put("word", (String) wordMap.get("word"));
-            word.put("mean", (String) wordMap.get("mean"));
-            resultList.add(word);
-        }
-
-        // 결과 리스트를 result 맵에 추가
-        result.put("wordLists", resultList);
+        result.put("wordLists", wordReq);
         return result;
     }
 

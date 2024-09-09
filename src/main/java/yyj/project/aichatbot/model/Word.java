@@ -17,6 +17,15 @@ public class Word {
     private String word;
     private String mean;
 
+
+
+    public Word() {}
+    public Word(Long id, String word, String mean) {
+        this.id = id;
+        this.word = word;
+        this.mean = mean;
+    }
+
     @Override
         public String toString(){
         return "{\"id\":\"" + id + "\", \"word\":\"" + word +
