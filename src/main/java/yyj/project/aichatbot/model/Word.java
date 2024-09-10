@@ -1,11 +1,11 @@
 package yyj.project.aichatbot.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,7 +16,6 @@ public class Word {
     private Long id;
     private String word;
     private String mean;
-
 
 
     public Word() {}

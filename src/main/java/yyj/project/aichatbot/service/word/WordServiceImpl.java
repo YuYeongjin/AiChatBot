@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import yyj.project.aichatbot.model.Word;
 import yyj.project.aichatbot.model.WordList;
+import yyj.project.aichatbot.model.WordMapping;
 import yyj.project.aichatbot.repository.word.WordListRepository;
+import yyj.project.aichatbot.repository.word.WordMappingRepository;
 import yyj.project.aichatbot.repository.word.WordRepository;
 
 import java.time.LocalDateTime;
@@ -21,7 +23,8 @@ public class WordServiceImpl implements WordService {
    private WordRepository wordRepository;
     @Autowired
     private WordListRepository wordListRepository;
-
+    @Autowired
+    private WordMappingRepository wordMappingRepository;
     @Override
     public Map<String, String> insertWord(Map<String, String> req) {
         Map<String,String> result = new HashMap<>();
@@ -121,15 +124,23 @@ public class WordServiceImpl implements WordService {
         Map<String,Object> result = new HashMap<>();
         try{
             List<Word> wordLists = new ArrayList<>();
-            wordLists = (List<Word>) req.get("ownList");
+//            wordLists = (List<Word>) req.get("ownList");
             String name = (String) req.get("name");
-
+            List<Map<String,Object>> lists = new ArrayList<>();
+            lists= (List<Map<String,Object>>) req.get("ownList");
             WordList wordList = new WordList();
             wordList.setName(name);
             wordList.setCreatedAt(LocalDateTime.now());
-            wordList.setWordList(wordLists.toString());
-
             wordListRepository.save(wordList);
+
+            int listId = wordListRepository.findAll().size();
+            for(Map<String,Object> item : lists){
+                WordMapping wordMapping = new WordMapping();
+                wordMapping.setWordId(Long.valueOf(item.get("id").toString()));
+                wordMapping.setListId((long) listId);
+                wordMappingRepository.save(wordMapping);
+            }
+
             result.put("status","1");
         } catch ( Exception e){
             result.put("status","0");
@@ -154,16 +165,21 @@ public class WordServiceImpl implements WordService {
     @Override
     public Map<String, Object> loadSaveList(Map<String, Object> req) {
         Map<String, Object> result = new HashMap<>();
-        List<Map<String, String>> resultList = new ArrayList<>();
+        List<Word> wordRes = new ArrayList<>();
         System.out.println("  req.get(\"list\"): " +  req.get("list"));
          System.out.println(" req.get(\"list\") class : " +  req.get("list").getClass().toString());
-        // req.get("list")가 LinkedHashMap인 경우 처리
-        LinkedHashMap wordReq = (LinkedHashMap) req.get("list");
-//        List<Word> resultLists = wordReq.stream()
-//                .map(map-> new Word((Long) map.get("id"), map.get("word").toString(), map.get("mean").toString()))
-//                .collect(Collectors.toList());
+        WordList wordList = wordListRepository.getReferenceById(Long.valueOf(req.get("list").toString()));
 
-        result.put("wordLists", wordReq);
+        List<WordMapping> mappingList = new ArrayList<>();
+        mappingList = wordMappingRepository.getListById(Long.valueOf(req.get("list").toString()));
+
+        // TODO@@@@@@@@@@@@
+        // mappingList foreach -> wordRes add
+
+        System.out.println(wordRes);
+
+
+        result.put("wordLists", wordRes);
         return result;
     }
 
