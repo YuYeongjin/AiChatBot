@@ -160,25 +160,19 @@ public class WordServiceImpl implements WordService {
         result.put("wordLists",wordListRepository.findAll());
         return result;
     }
- /// TODO ++++ 파싱하기
 
     @Override
     public Map<String, Object> loadSaveList(Map<String, Object> req) {
         Map<String, Object> result = new HashMap<>();
         List<Word> wordRes = new ArrayList<>();
-        System.out.println("  req.get(\"list\"): " +  req.get("list"));
-         System.out.println(" req.get(\"list\") class : " +  req.get("list").getClass().toString());
-        WordList wordList = wordListRepository.getReferenceById(Long.valueOf(req.get("list").toString()));
-
         List<WordMapping> mappingList = new ArrayList<>();
         mappingList = wordMappingRepository.getListById(Long.valueOf(req.get("list").toString()));
 
-        // TODO@@@@@@@@@@@@
-        // mappingList foreach -> wordRes add
-
-        System.out.println(wordRes);
-
-
+        for(int i = 0 ; i < mappingList.size(); i ++){
+            Word word = new Word();
+            word = wordRepository.findById(mappingList.get(i).getWordId()).orElse(null);
+            wordRes.add(word);
+        }
         result.put("wordLists", wordRes);
         return result;
     }
