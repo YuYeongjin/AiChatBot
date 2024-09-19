@@ -1,8 +1,5 @@
 package yyj.project.aichatbot.service.word;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +12,6 @@ import yyj.project.aichatbot.repository.word.WordRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class WordServiceImpl implements WordService {
@@ -145,8 +141,6 @@ public class WordServiceImpl implements WordService {
         } catch ( Exception e){
             result.put("status","0");
             result.put("error",e.getMessage());
-
-            e.printStackTrace();
         }
 
 
