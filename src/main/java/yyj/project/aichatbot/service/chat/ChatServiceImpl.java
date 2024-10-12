@@ -2,6 +2,7 @@ package yyj.project.aichatbot.service.chat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import yyj.project.aichatbot.component.Learning;
 import yyj.project.aichatbot.model.Chat;
 import yyj.project.aichatbot.repository.chat.ChatRepository;
 
@@ -12,7 +13,8 @@ import java.util.Map;
 public class ChatServiceImpl implements ChatService{
    @Autowired
    private ChatRepository chatRepository;
-
+@Autowired
+   private Learning learning;
     @Override
     public Map<String, String> chatMassage(Map<String, String> req) {
         Map<String,String> result = new HashMap<>();
@@ -26,6 +28,10 @@ public class ChatServiceImpl implements ChatService{
         answerChat.setAnswer(req.get("chat") + "의 답변은 : " + req.get("chat") +"@@@");
 
         chatRepository.save(answerChat);
+
+        // test -> ai 러닝
+
+        learning.leaning();
 
         result.put("text",answerChat.getAnswer());
 

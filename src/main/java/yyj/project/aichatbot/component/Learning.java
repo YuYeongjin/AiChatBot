@@ -1,5 +1,7 @@
 package yyj.project.aichatbot.component;
 
+import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
+import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.layers.DenseLayer;
@@ -11,15 +13,29 @@ import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.learning.config.Sgd;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
+import org.springframework.stereotype.Component;
 
+import java.io.File;
+
+@Component
 public class Learning {
-    public void leaning(){
+    // 1. Input Text 벡터화
+    // 임베딩 Word 2 vec 사용
+
+    // 2. 모델 생성 및 훈련
+
+    // 3. return
+
+
+    public static void leaning(){
         INDArray input = Nd4j.create(new double[][] {
                 {0, 0}, {0, 1}, {1, 0}, {1, 1}
         });
         INDArray labels = Nd4j.create(new double[][] {
                 {0}, {1}, {1}, {0}
         });
+
+        WordVectors wordVectors = loadWordVectors("C:\\Users\\82104\\Desktop\\yjyoo\\GoogleNews-vectors-negative300.bin");
 
         // 신경망 구성 설정
         MultiLayerConfiguration config = new NeuralNetConfiguration.Builder()
@@ -48,5 +64,15 @@ public class Learning {
         INDArray output = model.output(input);
         System.out.println("예측 결과: ");
         System.out.println(output);
+    }
+
+    // 단어 임베딩 로드 (Word2Vec 모델)
+    private static WordVectors loadWordVectors(String path) {
+        try {
+            return WordVectorSerializer.loadStaticModel(new File(path));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
