@@ -74,12 +74,7 @@ public class ChatServiceImpl implements ChatService{
         );
 //        List<String> sentences = new ArrayList<>();
 //        sentences = Arrays.asList(req.get("chat").split(" "));
-
-
         try{
-
-
-
 
             // init value
             // Word2Vec 벡터 크기 (예: 300차원 벡터)
@@ -88,12 +83,12 @@ public class ChatServiceImpl implements ChatService{
             int numClasses = 5;
             int batchSize = sentences.size();
             int sequenceLength = sentences.stream().mapToInt(s -> s.split(" ").length).max().orElse(0);
-
             // 입력 데이터 (배치 크기, 시퀀스 길이, 벡터 크기)
+            System.out.println(" input-> batchSize : " + batchSize + " / sequenceLength : " +sequenceLength + " / vectorSize : " + vectorSize );
             INDArray input = Nd4j.zeros(batchSize, sequenceLength, vectorSize);
             // 레이블 (난이도) 3D 배열 (배치 크기, 시퀀스 길이, 클래스 수)
-            INDArray labels = Nd4j.zeros(batchSize, sequenceLength, numClasses);
-
+            INDArray labels = Nd4j.zeros(batchSize, numClasses, vectorSize);
+//            INDArray labels = Nd4j.zeros(batchSize, sequenceLength, numClasses);
             for (int i = 0; i < sentences.size(); i++) {
                 String sentence = sentences.get(i);
                 List<String> tokens = List.of(sentence.split(" "));
@@ -104,8 +99,10 @@ public class ChatServiceImpl implements ChatService{
                     // Word2Vec 벡터 가져오기
                     if (wordVectors.hasWord(token)) {
                         INDArray wordVector = wordVectors.getWordVectorMatrix(token);
-//                        input.put(new INDArrayIndex[]{NDArrayIndex.point(i), NDArrayIndex.point(j)}, wordVector);
-                        input.put(new INDArrayIndex[]{NDArrayIndex.point(i), NDArrayIndex.point(j), NDArrayIndex.all()}, wordVector.reshape(1, vectorSize));
+                        System.out.println("input insert info : {NDArrayIndex.point(i) :" + NDArrayIndex.point(i).length()+ " //  NDArrayIndex.point(j) : "+ NDArrayIndex.point(j).length()+ " // wordVector : " + wordVector );
+                        input.put(new INDArrayIndex[]{NDArrayIndex.point(i), NDArrayIndex.point(j)}, wordVector);
+//                        input.put(new INDArrayIndex[]{NDArrayIndex.point(i), NDArrayIndex.point(j), NDArrayIndex.all()}, wordVector.reshape(1, vectorSize));
+//                        input.put(new INDArrayIndex[]{Nd4j.create(NDArrayIndex.point(i), new int[]{1, vectorSize}));
                     }
 
                     // 난이도 레이블 설정
@@ -122,9 +119,9 @@ public class ChatServiceImpl implements ChatService{
                     .updater(new Adam(0.01))
                     .weightInit(WeightInit.XAVIER)
                     .list()
-                    .layer(0, new LSTM.Builder().nIn(vectorSize).nOut(100).activation(Activation.TANH).build())
+                    .layer(0, new LSTM.Builder().nIn(vectorSize).nOut(numClasses).activation(Activation.TANH).build())
                     .layer(1, new RnnOutputLayer.Builder(LossFunctions.LossFunction.MCXENT)
-                            .nIn(100).nOut(numClasses).activation(Activation.SOFTMAX).build()) // RNN 출력 레이어
+                            .nIn(numClasses).nOut(numClasses).activation(Activation.SOFTMAX).build()) // RNN 출력 레이어
                     .build();
 
 // 모델 생성 및 학습
