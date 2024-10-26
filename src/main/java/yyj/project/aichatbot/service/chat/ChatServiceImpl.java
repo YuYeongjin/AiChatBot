@@ -54,7 +54,28 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public Map<String, String> chatMassage(Map<String, String> req) {
-        Map<String, String> result = new HashMap<>();
+        Map<String,String> result = new HashMap<>();
+        List<String> tokens = new ArrayList<>();
+        StringTokenizer tokenizer = new StringTokenizer(req.get("chat"));
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("추출된 단어는 ");
+        while (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken();
+            tokens.add(token);
+            builder.append(token);
+            builder.append(", ");
+        }
+
+        if (!tokens.isEmpty()) {
+            builder.setLength(builder.length() - 2);
+        }
+        builder.append("입니다.");
+        result.put("result",builder.toString());
+        return result;
+    }
+    /*
+       Map<String, String> result = new HashMap<>();
         List<INDArray> wordVectorsList = new ArrayList<>();
 
         // 새로운 단어 생성에 대한 난이도 설정
@@ -166,5 +187,5 @@ public class ChatServiceImpl implements ChatService{
             result.put("text", e.getMessage());
         }
         return result;
-    }
+     */
 }
