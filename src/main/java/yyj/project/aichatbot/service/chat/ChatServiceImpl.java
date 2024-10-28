@@ -24,6 +24,7 @@ import org.nd4j.linalg.indexing.INDArrayIndex;
 import org.nd4j.linalg.indexing.NDArrayIndex;
 import org.nd4j.linalg.learning.config.Adam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import yyj.project.aichatbot.model.Chat;
 import yyj.project.aichatbot.repository.chat.ChatRepository;
@@ -41,19 +42,21 @@ public class ChatServiceImpl implements ChatService{
 
     @Autowired
     private WordVectors wordVectors;
+
+    @Value("${naver.client_id}")
+    private String naverClientId;
+
+    @Value("${naver.client_secret")
+    private String naverClientSecret;
 /*
  1. 영어 문장 입력 시 분석하여 영어 단어로 분해
  2. ai를 꼭 도입하지 않더라도 맞게 대응
  3. 머신러닝을 위해 학습은 시켜볼 것
 
-
  */
-
-
-
-
     @Override
     public Map<String, String> chatMassage(Map<String, String> req) {
+        System.out.println("chat : " + req);
         Map<String,String> result = new HashMap<>();
         List<String> tokens = new ArrayList<>();
         StringTokenizer tokenizer = new StringTokenizer(req.get("chat"));
@@ -62,6 +65,12 @@ public class ChatServiceImpl implements ChatService{
         builder.append("추출된 단어는 ");
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
+            if(token.contains(".")){
+                System.out.println(token+"에 .이 포함됨");
+                token = token.replaceAll("\\.","");
+                System.out.println(token+" : 수정됨");
+            }
+            
             tokens.add(token);
             builder.append(token);
             builder.append(", ");
@@ -71,6 +80,7 @@ public class ChatServiceImpl implements ChatService{
             builder.setLength(builder.length() - 2);
         }
         builder.append("입니다.");
+        System.out.println("result:"+builder.toString());
         result.put("result",builder.toString());
         return result;
     }
